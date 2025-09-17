@@ -1,5 +1,6 @@
 import herobg from "../public/assets1/banner.webp";
 import { CheckCircle } from "lucide-react";
+import Image from "next/image";
 
 interface HeroProps {
   title: string | null;
@@ -39,12 +40,18 @@ export default function Hero({
         showBookingForm
           ? "2xl:min-h-[926px] xl:min-h-[800px]"
           : "min-h-[350px] lg:min-h-[800px]"
-      } bg-cover bg-center overflow-hidden px-4 md:px-0`}
-      style={{
-        backgroundImage: `url(${herobg.src})`,
-      }}
+      } relative overflow-hidden px-4 md:px-0`}
     >
-      <div className={`inset-0 flex items-center justify-center ${showBookingForm ? "mt-[120px] md:mt-[120px] lg:mt-[200px] 2xl:mt-[200px]" : "mt-[120px] lg:mt-[320px]"}`}>
+      <Image
+        src={herobg}
+        alt="Hero background"
+        fill
+        priority
+        className="object-cover"
+        placeholder="blur"
+        sizes="100vw"
+      />
+      <div className={`relative z-10 inset-0 flex items-center justify-center ${showBookingForm ? "mt-[120px] md:mt-[120px] lg:mt-[200px] 2xl:mt-[200px]" : "mt-[120px] lg:mt-[320px]"}`}>
         <div className="text-center text-white">
           {title && (
             <h1 className={`${showBookingForm ? 'text-2xl md:text-3xl' : 'text-2xl md:text-3xl'} lg:text-4xl xl:text-6xl font-light lg:mb-2 xl:mb-2`}>

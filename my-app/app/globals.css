@@ -25,6 +25,24 @@ body {
   font-family: var(--font-archivo), sans-serif;
 }
 
+/* Performance optimizations */
+img {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 1000px;
+}
+
+/* Optimize animations */
+@media (prefers-reduced-motion: no-preference) {
+  .motion-safe\:animate-spin {
+    animation: spin 1s linear infinite;
+  }
+}
+
+/* Reduce layout shift */
+.container {
+  contain: layout style paint;
+}
+
 /* Hide default placeholders for date and time inputs on mobile only */
 @media (max-width: 768px) {
   input[type="date"]:invalid {

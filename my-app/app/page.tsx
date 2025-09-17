@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, lazy, Suspense } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import useEmblaCarousel from "embla-carousel-react";
@@ -15,7 +15,9 @@ import { AddressResult } from "../hooks/useAddressAutocomplete";
 import { QuoteService } from "../lib/quote-service";
 import { QuoteBreakdown } from "../lib/pricing-config";
 import { CheckCircle } from "lucide-react";
-import ReCAPTCHA from "react-google-recaptcha";
+
+// Lazy load heavy components
+const ReCAPTCHA = lazy(() => import("react-google-recaptcha"));
 import rtl from "../public/assets1/rtl-line.png";
 import airport from "../public/assets1/airport.webp";
 import business from "../public/assets1/business.webp";
@@ -496,8 +498,8 @@ export default function Home() {
               </motion.div>
             </FadeInWhenVisible>
           </div>
-
-          <FadeInWhenVisible delay={0.5}>
+{/* 
+          <FadeInWhenVisible delay={0.5}> */}
             <div className="text-center md-3 md:mt-6">
               <button
                 onClick={() => router.push("/services")}
@@ -506,7 +508,7 @@ export default function Home() {
                 Find out more
               </button>
             </div>
-          </FadeInWhenVisible>
+          {/* </FadeInWhenVisible> */}
         </div>
       </section>
 
@@ -518,7 +520,7 @@ export default function Home() {
         }}
       >
         <div className="absolute top-0 right-0 z-50">
-          <Image src={rtl} alt="ltr" className="w-full" />
+          <Image src={rtl} alt="ltr" className="w-full" loading="lazy" />
         </div>
         <div className="container mx-auto px-4 text-center max-w-[1170px] text-white">
           <FadeInWhenVisible>
@@ -540,7 +542,7 @@ export default function Home() {
                   className="w-20 h-20 rounded-full flex items-end justify-center mx-auto mb-8"
                   transition={{ duration: 0.3 }}
                 >
-                  <Image src={time} alt="time" />
+                  <Image src={time} alt="time" loading="lazy" />
                 </motion.div>
                 <h3 className="text-lg font-semibold max-w-[170px] mx-auto">
                   We are available 24/7
@@ -558,7 +560,7 @@ export default function Home() {
                   className="w-20 h-20 rounded-full flex items-end justify-center mx-auto mb-8"
                   transition={{ duration: 0.3 }}
                 >
-                  <Image src={payment} alt="payment" />
+                  <Image src={payment} alt="payment" loading="lazy" />
                 </motion.div>
                 <h3 className="text-lg font-semibold mb-2 max-w-[170px] mx-auto">
                   Secure Payment methods
@@ -575,7 +577,7 @@ export default function Home() {
                   className="w-20 h-20 rounded-full flex items-end justify-center mx-auto mb-8"
                   transition={{ duration: 0.3 }}
                 >
-                  <Image src={bottle} alt="bottle" />
+                  <Image src={bottle} alt="bottle" loading="lazy" />
                 </motion.div>
                 <h3 className="text-lg font-semibold mb-2 max-w-[170px] mx-auto">
                   Bottled Water
@@ -592,7 +594,7 @@ export default function Home() {
                   className="w-20 h-20 rounded-full flex items-end justify-center mx-auto mb-8"
                   transition={{ duration: 0.3 }}
                 >
-                  <Image src={wifi} alt="wifi" />
+                  <Image src={wifi} alt="wifi" loading="lazy" />
                 </motion.div>
                 <h3 className="text-lg font-semibold mb-2">Wi-fi</h3>
               </motion.div>
@@ -607,7 +609,7 @@ export default function Home() {
                   className="w-20 h-20 rounded-full flex items-end justify-center mx-auto mb-8"
                   transition={{ duration: 0.3 }}
                 >
-                  <Image src={reading} alt="reading" />
+                  <Image src={reading} alt="reading" loading="lazy" />
                 </motion.div>
                 <h3 className="text-lg font-semibold mb-2 max-w-[170px] mx-auto">
                   Reading Materials
@@ -644,7 +646,7 @@ export default function Home() {
                 >
                   <div className="overflow-hidden">
                     <div className="h-48 md:h-64 flex items-center justify-center">
-                      <Image src={vehicle.image} alt={vehicle.name} />
+                      <Image src={vehicle.image} alt={vehicle.name} loading="lazy" />
                     </div>
                     <div className="px-3 md:p-6">
                       <h3 className="text-xl md:text-2xl font-bold mb-2 text-black">
@@ -660,6 +662,7 @@ export default function Home() {
                               src={dollor}
                               alt="passengers"
                               className="w-[20px] h-[20px]"
+                              loading="lazy"
                             />
                           </div>
                           <span className="text-base font-medium text-black">
@@ -673,6 +676,7 @@ export default function Home() {
                               src={comm}
                               alt="luggage"
                               className="w-[20px] h-[20px]"
+                              loading="lazy"
                             />
                           </div>
                           <span className="text-base font-medium text-black">
@@ -740,7 +744,7 @@ export default function Home() {
                           <div
                             className="text-4xl flex justify-center text-white/40 mb-4"
                           >
-                            <Image src={test} alt="test"/>
+                            <Image src={test} alt="test" loading="lazy" />
                           </div>
                           <p className="text-base mb-4 italic leading-relaxed text-white/90">
                             {testimonial.text}
@@ -917,7 +921,7 @@ export default function Home() {
 
               <FadeInWhenVisible delay={0.3}>
                 <div className="flex justify-center mb-6">
-                  
+                  <Suspense fallback={<div className="w-[304px] h-[78px] bg-gray-200 animate-pulse rounded"></div>}>
                     <ReCAPTCHA
                       sitekey="6LfcgMorAAAAAEwEYVQROOhQ7UvedHoyHlJcg_aa"
                       onChange={(value) => setRecaptchaValue(value)}
@@ -925,7 +929,7 @@ export default function Home() {
                       onError={() => setRecaptchaValue(null)}
                       theme="dark"
                     />
-                  
+                  </Suspense>
                 </div>
               </FadeInWhenVisible>
 
